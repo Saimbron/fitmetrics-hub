@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="ca" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitMetrics Hub | Calculadora de Calories, Macros, Greix US Navy i Pes Ideal</title>
+  <meta name="description" content="Suite gratuïta de càlcul nutricional i biomètric: TDEE i calories Mifflin-St Jeor, % de Greix Corporal mètode Marina EUA, comparativa de Pes Ideal (Devine, Robinson, Miller, Hamwi) i exportació d'informes de salut.">
+  <meta name="keywords" content="calculadora calories, tdee, calculadora macros, greix corporal marina eua, us navy body fat, pes ideal devine robinson miller hamwi, imc, metabolisme basal, informe nutricional">
+  <meta name="author" content="FitMetrics Hub">
+
+  <!-- Open Graph / SEO -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FitMetrics Hub — Suite Nutricional i Biomètrica de Precisió">
+  <meta property="og:description" content="Calcula el teu TDEE, % de Greix de la Marina dels EUA, comparativa de Pes Ideal per 4 fórmules clíniques i exporta el teu resum nutricional.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1200&q=80">
+
+  <!-- Schema.org HealthTopic / SoftwareApplication Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "FitMetrics Hub",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "All",
+    "description": "Calculadora nutricional i biomètrica d'alta precisió basada en fórmules clíniques validades: Mifflin-St Jeor per a TDEE, mètode de la Marina dels EUA per a greix corporal i comparativa de pes ideal segons Devine, Robinson, Miller i Hamwi.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "featureList": [
+      "Calculadora de Despesa Energètica Total (TDEE) i Metabolisme Basal (BMR)",
+      "Distribució interactiva de Macronutrients (Proteïna, Hidrats, Greixos)",
+      "Càlcul de % Greix Corporal segons el mètode de la Marina dels EUA (US Navy)",
+      "Comparativa del Pes Ideal segons 4 fórmules clíniques (Devine, Robinson, Miller, Hamwi)",
+      "Avaluació de rang de pes saludable segons l'OMS i IMC",
+      "Recomanació personalitzada d'hidratació diària",
+      "Exportació i impressió directa de l'informe nutricional en PDF"
+    ],
+    "author": {
+      "@type": "Organization",
+      "name": "FitMetrics Hub"
+    }
+  }
+  </script>
+  
+  <!-- Tailwind CSS CDN & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- GOOGLE ADSENSE CODE PLACEHOLDER -->
+  <!-- Substitueix 'ca-pub-XXXXXXXXXXXXXXXX' pel teu identificador d'editor d'AdSense -->
+  <!--
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .dark .glass-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+    .ad-placeholder {
+      border: 2px dashed #94a3b8;
+      background: linear-gradient(135deg, rgba(248, 250, 252, 0.6) 0%, rgba(241, 245, 249, 0.6) 100%);
+    }
+    .dark .ad-placeholder {
+      border-color: #334155;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%);
+    }
+
+    /* Print styling: clean professional medical/fitness PDF format */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+      }
+      header, footer, .ad-placeholder, #themeToggleFit, .no-print, nav, #cookieNotice {
+        display: none !important;
+      }
+      .fit-tab-content {
+        display: block !important;
+      }
+      .glass-card {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+        margin-bottom: 1.5rem !important;
+      }
+      #print-report-header {
+        display: block !important;
+      }
+    }
+    #print-report-header {
+      display: none;
+    }
+    /* Hide scrollbars for tab bar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
+
+  <!-- PRINT-ONLY REPORT HEADER -->
+  <div id="print-report-header" class="p-6 mb-6 border-b-2 border-slate-900 bg-white text-slate-900">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-300">
+      <div>
+        <h1 class="text-2xl font-black tracking-tight text-rose-600">FITMETRICS HUB — INFORME CLÍNIC I NUTRICIONAL</h1>
+        <p class="text-xs text-slate-600 mt-0.5">Avaluació de Despesa Energètica, Greix US Navy i Pes Ideal Clínic</p>
+      </div>
+      <div class="text-right text-xs font-mono text-slate-600">
+        <div>Data: <strong id="print-date">05/10/2026</strong></div>
+        <div>Mètodes: Mifflin-St Jeor • US Navy • Devine</div>
+      </div>
+    </div>
+    <div id="print-summary-metrics" class="grid grid-cols-4 gap-4 mt-4 text-xs font-mono">
+      <!-- Injected before print -->
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 shrink-0 cursor-pointer" onclick="switchFitTab('tdee')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-rose-500/20">
+          <i data-lucide="activity" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-rose-500 to-amber-500 bg-clip-text text-transparent">FitMetrics</span>
+          <span class="text-xs font-semibold px-2 py-0.5 ml-1 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">HUB</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl overflow-x-auto no-scrollbar max-w-[65%] lg:max-w-none">
+        <button onclick="switchFitTab('tdee')" id="fittab-btn-tdee" class="fittab-button px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all bg-white dark:bg-slate-700 text-rose-600 dark:text-rose-400 shadow-sm shrink-0 flex items-center gap-1.5">
+          <i data-lucide="flame" class="w-3.5 h-3.5"></i> TDEE & Macros
+        </button>
+        <button onclick="switchFitTab('bodyfat')" id="fittab-btn-bodyfat" class="fittab-button px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white shrink-0 flex items-center gap-1.5">
+          <i data-lucide="percent" class="w-3.5 h-3.5 text-amber-500"></i> Greix US Navy
+        </button>
+        <button onclick="switchFitTab('idealweight')" id="fittab-btn-idealweight" class="fittab-button px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white shrink-0 flex items-center gap-1.5">
+          <i data-lucide="scale" class="w-3.5 h-3.5 text-indigo-500"></i> Pes Ideal Clínic
+        </button>
+        <button onclick="switchFitTab('water')" id="fittab-btn-water" class="fittab-button px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white shrink-0 flex items-center gap-1.5">
+          <i data-lucide="droplet" class="w-3.5 h-3.5 text-cyan-500"></i> Hidratació
+        </button>
+      </nav>
+
+      <!-- Actions: Print / Export & Theme Toggle -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Print / Export Button -->
+        <button onclick="triggerPrintReport()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-semibold text-xs transition-all shadow-md shadow-rose-500/20">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Imprimir / PDF</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggleFit" class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Canviar Tema">
+          <i data-lucide="moon" class="w-4 h-4 dark:hidden text-slate-600"></i>
+          <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ADSENSE TOP LEADERBOARD -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full no-print">
+    <div class="ad-placeholder rounded-2xl p-4 flex flex-col items-center justify-center min-h-[90px] text-center">
+      <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+        <i data-lucide="badge-dollar-sign" class="w-4 h-4 text-rose-500"></i> Espai Publicitari Google AdSense (Fitness Leaderboard)
+      </div>
+      <p class="text-xs text-slate-400">Anuncis de suplements esportius, gimnasos, nutrició clínica i aplicacions de salut.</p>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    
+    <!-- HERO HEADER -->
+    <div class="text-center max-w-3xl mx-auto mb-8 no-print">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 mb-3 border border-rose-200 dark:border-rose-900">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Eines Biomètriques Basades en Evidència Científica
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+        Calculadora de <span class="bg-gradient-to-r from-rose-500 via-amber-500 to-orange-500 bg-clip-text text-transparent">Metabolisme i Composició</span>
+      </h1>
+      <p class="mt-3 text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+        Calcula la teva despesa calòrica TDEE, el teu % de greix corporal pel mètode de la Marina dels EUA i compara el teu pes ideal amb 4 fórmules clíniques internacionals.
+      </p>
+    </div>
+
+    <!-- SHARED BIOMETRIC PROFILE SYNC BAR -->
+    <div class="glass-card rounded-2xl p-4 mb-8 shadow-sm border border-slate-200 dark:border-slate-800">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sliders" class="w-4 h-4 text-rose-500"></i>
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Dades Biomètriques Generals:</span>
+          <span class="text-[11px] text-slate-400 hidden sm:inline">(Sincronitzades a totes les eines)</span>
+        </div>
+
+        <div class="flex items-center gap-4 flex-wrap text-xs">
+          <!-- Gender -->
+          <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+            <button type="button" id="global-gender-m" onclick="setGlobalGender('m')" class="px-2.5 py-1 rounded font-semibold text-xs bg-rose-500 text-white shadow-sm transition-all flex items-center gap-1">
+              <i data-lucide="user" class="w-3 h-3"></i> Home
+            </button>
+            <button type="button" id="global-gender-f" onclick="setGlobalGender('f')" class="px-2.5 py-1 rounded font-semibold text-xs text-slate-600 dark:text-slate-400 transition-all flex items-center gap-1">
+              <i data-lucide="user" class="w-3 h-3"></i> Dona
+            </button>
+          </div>
+
+          <!-- Age -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-500">Edat:</span>
+            <input type="number" id="global_age" value="28" min="14" max="100" class="w-16 px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-xs text-center" oninput="syncBiometrics('age', this.value)">
+            <span class="text-slate-400">anys</span>
+          </div>
+
+          <!-- Weight -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-500">Pes:</span>
+            <input type="number" id="global_weight" value="75" min="30" max="250" step="0.5" class="w-20 px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-xs text-center" oninput="syncBiometrics('weight', this.value)">
+            <span class="text-slate-400">kg</span>
+          </div>
+
+          <!-- Height -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-500">Alçada:</span>
+            <input type="number" id="global_height" value="178" min="100" max="230" class="w-20 px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-xs text-center" oninput="syncBiometrics('height', this.value)">
+            <span class="text-slate-400">cm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 1: TDEE & MACRONUTRIENTS -->
+    <section id="fit-section-tdee" class="fit-tab-content block">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Controls (5 cols) -->
+        <div class="lg:col-span-5 glass-card rounded-2xl p-6 shadow-xl">
+          <h2 class="text-base font-bold pb-3 border-b border-slate-200 dark:border-slate-800 mb-4 flex items-center gap-2">
+            <i data-lucide="flame" class="w-5 h-5 text-rose-500"></i> Paràmetres d'Activitat i Objectiu
+          </h2>
+
+          <form class="space-y-4" onsubmit="event.preventDefault(); calculateTDEE();">
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Nivell d'Activitat Física</label>
+              <select id="fit_activity" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200" onchange="calculateTDEE()">
+                <option value="1.2">Sedentari (Feina d'oficina, poc o cap exercici)</option>
+                <option value="1.375" selected>Lleugerament actiu (Exercici 1-3 dies/setmana)</option>
+                <option value="1.55">Moderadament actiu (Exercici 3-5 dies/setmana)</option>
+                <option value="1.725">Molt actiu (Entrenament dur 6-7 dies/setmana)</option>
+                <option value="1.9">Atleta d'elit (Entrenament intens diari doble sessió)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Objectiu Nutricional</label>
+              <select id="fit_goal" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200" onchange="calculateTDEE()">
+                <option value="-500">Pèrdua de greix moderada (-500 kcal/dia)</option>
+                <option value="-300">Dèficit suau / Definició neta (-300 kcal/dia)</option>
+                <option value="0" selected>Manteniment de pes corporal</option>
+                <option value="300">Volum net / Guany muscular magre (+300 kcal/dia)</option>
+                <option value="500">Superàvit hipertròfia (+500 kcal/dia)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Estratègia de Macronutrients</label>
+              <select id="fit_diet_type" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200" onchange="calculateTDEE()">
+                <option value="balanced" selected>Equilibrada Estàndard (30% Proteïna, 45% Carbs, 25% Greixos)</option>
+                <option value="highprotein">Alta en Proteïna / Esportiva (35% Proteïna, 40% Carbs, 25% Greixos)</option>
+                <option value="lowcarb">Baixa en Carbohidrats (35% Proteïna, 25% Carbs, 40% Greixos)</option>
+                <option value="keto">Cetogènica / Keto (20% Proteïna, 5% Carbs, 75% Greixos)</option>
+              </select>
+            </div>
+          </form>
+        </div>
+
+        <!-- Results (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-l-rose-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Calories Objectiu</span>
+              <div class="text-2xl sm:text-3xl font-black text-rose-600 dark:text-rose-400 mt-1 font-mono" id="fit_res_target">
+                2.350 kcal
+              </div>
+              <span class="text-[11px] text-slate-400">Energia diària recomanada</span>
+            </div>
+
+            <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-l-amber-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">TDEE (Manteniment)</span>
+              <div class="text-2xl sm:text-3xl font-black text-amber-500 mt-1 font-mono" id="fit_res_tdee">
+                2.350 kcal
+              </div>
+              <span class="text-[11px] text-slate-400">Despesa energètica total</span>
+            </div>
+
+            <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-l-indigo-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">BMR (Metabolisme Basal)</span>
+              <div class="text-2xl sm:text-3xl font-black text-indigo-500 mt-1 font-mono" id="fit_res_bmr">
+                1.709 kcal
+              </div>
+              <span class="text-[11px] text-slate-400">Consum en repòs absolut</span>
+            </div>
+          </div>
+
+          <!-- Macro distribution chart -->
+          <div class="glass-card rounded-2xl p-6 shadow-xl">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center justify-between">
+              <span>Distribució de Macronutrients Suggerida</span>
+              <span class="text-xs text-rose-500 font-mono" id="macro-diet-name">Equilibrada (30P / 45C / 25G)</span>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div class="md:col-span-5 h-48 w-full flex items-center justify-center">
+                <canvas id="macroChart"></canvas>
+              </div>
+              <div class="md:col-span-7 space-y-3 font-mono text-xs">
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60">
+                  <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                    <span class="font-bold text-slate-900 dark:text-white">Proteïna:</span>
+                  </div>
+                  <span id="macro_protein_g" class="font-bold text-rose-600 dark:text-rose-400">176 g (705 kcal)</span>
+                </div>
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60">
+                  <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                    <span class="font-bold text-slate-900 dark:text-white">Hidrats de carboni:</span>
+                  </div>
+                  <span id="macro_carb_g" class="font-bold text-amber-600 dark:text-amber-400">264 g (1057 kcal)</span>
+                </div>
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-900/60">
+                  <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-cyan-500"></span>
+                    <span class="font-bold text-slate-900 dark:text-white">Greixos saludables:</span>
+                  </div>
+                  <span id="macro_fat_g" class="font-bold text-cyan-600 dark:text-cyan-400">65 g (587 kcal)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: US NAVY BODY FAT CALCULATOR -->
+    <section id="fit-section-bodyfat" class="fit-tab-content hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Controls (5 cols) -->
+        <div class="lg:col-span-5 glass-card rounded-2xl p-6 shadow-xl">
+          <div class="pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
+            <h2 class="text-base font-bold flex items-center gap-2">
+              <i data-lucide="percent" class="w-5 h-5 text-amber-500"></i> Mesures Circumferencials (Mètode US Navy)
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Estàndard oficial del Departament de Defensa dels EUA per mesurar el % de greix corporal sense bàscules bioelèctriques.</p>
+          </div>
+
+          <form class="space-y-4" onsubmit="event.preventDefault(); calculateBodyFat();">
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">
+                Perímetre del Coll (cm)
+              </label>
+              <input type="number" id="navy_neck" value="38" min="20" max="60" step="0.5" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-xs" oninput="calculateBodyFat()">
+              <span class="text-[11px] text-slate-400">Mesura just a sota de la nou, sense estrènyer la pell.</span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">
+                Perímetre de la Cintura (cm)
+              </label>
+              <input type="number" id="navy_waist" value="84" min="40" max="180" step="0.5" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-xs" oninput="calculateBodyFat()">
+              <span class="text-[11px] text-slate-400">Homes: a l'alçada del melic. Dones: al punt més estret del tors.</span>
+            </div>
+
+            <!-- Hip input (specifically required for women) -->
+            <div id="navy_hip_container" class="hidden">
+              <label class="block text-xs font-semibold uppercase text-rose-500 mb-1">
+                Perímetre del Maluc / Malucs (cm) — Requerit per a dones
+              </label>
+              <input type="number" id="navy_hip" value="98" min="50" max="200" step="0.5" class="w-full px-3 py-2 rounded-xl border border-rose-300 dark:border-rose-900 bg-white dark:bg-slate-800 font-mono text-xs" oninput="calculateBodyFat()">
+              <span class="text-[11px] text-slate-400">Mesura a la part més ampla dels glutis / malucs horitzontalment.</span>
+            </div>
+
+            <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 text-xs text-amber-800 dark:text-amber-300 flex items-start gap-2">
+              <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5"></i>
+              <span>Per a màxima precisió, pren les mides al matí en dejú utilitzant una cinta mètrica flexible no elàstica.</span>
+            </div>
+          </form>
+        </div>
+
+        <!-- Results (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-l-amber-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">% Greix Corporal</span>
+              <div class="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 mt-1 font-mono" id="navy_res_percent">
+                15.8%
+              </div>
+              <span id="navy_res_category_badge" class="inline-block mt-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                Fitness
+              </span>
+            </div>
+
+            <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-l-rose-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Massa Grassa Total</span>
+              <div class="text-2xl sm:text-3xl font-black text-rose-600 dark:text-rose-400 mt-1 font-mono" id="navy_res_fatmass">
+                11.9 kg
+              </div>
+              <span class="text-[11px] text-slate-400">Teixit adipós estimat</span>
+            </div>
+
+            <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-l-cyan-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Massa Magra (LBM)</span>
+              <div class="text-2xl sm:text-3xl font-black text-cyan-600 dark:text-cyan-400 mt-1 font-mono" id="navy_res_leanmass">
+                63.1 kg
+              </div>
+              <span class="text-[11px] text-slate-400">Múscul, ossos i òrgans</span>
+            </div>
+          </div>
+
+          <!-- Body Composition Chart & Category Breakdown -->
+          <div class="glass-card rounded-2xl p-6 shadow-xl space-y-6">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center justify-between">
+              <span>Classificació segons l'American Council on Exercise (ACE)</span>
+              <span class="text-xs font-mono text-amber-500" id="navy_gender_indicator">Criteri: Homes</span>
+            </h3>
+
+            <!-- Donut Chart & Breakdown -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div class="md:col-span-5 h-44 w-full flex items-center justify-center">
+                <canvas id="bodyFatChart"></canvas>
+              </div>
+              <div class="md:col-span-7 space-y-2 text-xs">
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60" id="ace-row-essential">
+                  <span class="font-medium">Greix Essencial:</span>
+                  <span class="font-mono font-bold" id="ace-range-essential">2 - 5% (Homes)</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60" id="ace-row-athletes">
+                  <span class="font-medium">Atletes d'Elit:</span>
+                  <span class="font-mono font-bold" id="ace-range-athletes">6 - 13% (Homes)</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60" id="ace-row-fitness">
+                  <span class="font-medium">Fitness / Òptim:</span>
+                  <span class="font-mono font-bold" id="ace-range-fitness">14 - 17% (Homes)</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60" id="ace-row-average">
+                  <span class="font-medium">Mitjà / Acceptable:</span>
+                  <span class="font-mono font-bold" id="ace-range-average">18 - 24% (Homes)</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60" id="ace-row-obese">
+                  <span class="font-medium">Sobrepès / Obesitat:</span>
+                  <span class="font-mono font-bold" id="ace-range-obese">&ge; 25% (Homes)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visual Bar Gauge -->
+            <div>
+              <div class="flex justify-between text-[11px] font-mono text-slate-400 mb-1">
+                <span>Atleta</span>
+                <span>Fitness</span>
+                <span>Acceptable</span>
+                <span>Elevat</span>
+              </div>
+              <div class="w-full h-3 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden flex">
+                <div class="h-full bg-cyan-400 w-1/4"></div>
+                <div class="h-full bg-emerald-400 w-1/4"></div>
+                <div class="h-full bg-amber-400 w-1/4"></div>
+                <div class="h-full bg-rose-500 w-1/4"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: IDEAL WEIGHT (4 CLINICAL FORMULAS) & BMI -->
+    <section id="fit-section-idealweight" class="fit-tab-content hidden">
+      <div class="space-y-8">
+        
+        <!-- Summary Banner -->
+        <div class="glass-card rounded-2xl p-6 shadow-xl border-l-4 border-l-indigo-500 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-indigo-500">Mitjana Clínica Combinada (4 Fórmules)</span>
+            <div class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mt-1 font-mono">
+              <span id="ideal_avg_weight">72.4 kg</span>
+              <span class="text-sm font-normal text-slate-400 ml-2">(Pes Actual: <strong id="ideal_curr_weight_display">75 kg</strong>)</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" id="ideal_weight_delta_msg">
+              Diferència de +2.6 kg respecte a la mitjana clínica ideal.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <div class="p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 text-center font-mono">
+              <span class="text-[10px] uppercase text-indigo-500 block font-sans">El Teu IMC</span>
+              <span class="text-xl font-bold text-slate-900 dark:text-white" id="ideal_curr_bmi">23.7</span>
+              <span class="text-[10px] text-emerald-500 block" id="ideal_curr_bmi_label">Pes Normal</span>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-center font-mono">
+              <span class="text-[10px] uppercase text-slate-400 block font-sans">Rang OMS (18.5 - 24.9)</span>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200" id="ideal_who_range">58.6 kg - 78.9 kg</span>
+              <span class="text-[10px] text-slate-400 block">Interval Saludable</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Clinical Formulas Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- 1. Devine -->
+          <div class="glass-card rounded-2xl p-5 shadow-lg border-t-4 border-t-rose-500">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-sm">Fórmula Devine</h4>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-300">1974</span>
+            </div>
+            <div class="text-2xl font-black text-rose-600 dark:text-rose-400 font-mono" id="ideal_devine_val">
+              73.0 kg
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+              L'estàndard mèdic d'or utilitzat a hospitals i farmacologia per dosificar fàrmacs hidròfils.
+            </p>
+          </div>
+
+          <!-- 2. Robinson -->
+          <div class="glass-card rounded-2xl p-5 shadow-lg border-t-4 border-t-amber-500">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-sm">Fórmula Robinson</h4>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-300">1983</span>
+            </div>
+            <div class="text-2xl font-black text-amber-600 dark:text-amber-400 font-mono" id="ideal_robinson_val">
+              71.0 kg
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+              Modificació de la fórmula de Devine basada en dades de pes i alçada de població adulta general.
+            </p>
+          </div>
+
+          <!-- 3. Miller -->
+          <div class="glass-card rounded-2xl p-5 shadow-lg border-t-4 border-t-emerald-500">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-sm">Fórmula Miller</h4>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300">1983</span>
+            </div>
+            <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono" id="ideal_miller_val">
+              70.3 kg
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+              Calculada a partir de models antropomètrics amb menor dependència lineal de l'alçada.
+            </p>
+          </div>
+
+          <!-- 4. Hamwi -->
+          <div class="glass-card rounded-2xl p-5 shadow-lg border-t-4 border-t-cyan-500">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-sm">Fórmula Hamwi</h4>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-600 dark:text-cyan-300">1964</span>
+            </div>
+            <div class="text-2xl font-black text-cyan-600 dark:text-cyan-400 font-mono" id="ideal_hamwi_val">
+              75.0 kg
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+              Fórmula clàssica de l'American Diabetes Association, àmpliament estesa en guies clíniques.
+            </p>
+          </div>
+        </div>
+
+        <!-- Clinical Comparison Table -->
+        <div class="glass-card rounded-2xl p-6 shadow-xl">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
+            Comparativa de Fórmules vs el teu Pes Actual
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+              <thead class="text-slate-400 border-b border-slate-200 dark:border-slate-800 font-mono">
+                <tr>
+                  <th class="py-2.5">Fórmula Mèdica</th>
+                  <th class="py-2.5">Pes Calculat</th>
+                  <th class="py-2.5">Diferència (Pes Actual)</th>
+                  <th class="py-2.5">Estat Clínic</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 font-mono" id="ideal-table-body">
+                <!-- Injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: HYDRATION & HEALTH -->
+    <section id="fit-section-water" class="fit-tab-content hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <div class="lg:col-span-5 glass-card rounded-2xl p-6 shadow-xl space-y-4">
+          <div class="pb-3 border-b border-slate-200 dark:border-slate-800">
+            <h2 class="text-base font-bold flex items-center gap-2">
+              <i data-lucide="droplet" class="w-5 h-5 text-cyan-500"></i> Objectiu d'Aigua Personalitzat
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Calculat a partir de 35 ml per kg de pes corporal més el desgast per activitat.</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Intensitat de Sudoració / Clima</label>
+            <select id="water_climate" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs" onchange="calculateHydration()">
+              <option value="0">Normal / Clima temperat (+0 ml)</option>
+              <option value="500" selected>Entrenament o Clima càlid (+500 ml)</option>
+              <option value="1000">Entrenament intens / Molta calor (+1.000 ml)</option>
+            </select>
+          </div>
+
+          <div class="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-900/60 text-center font-mono">
+            <span class="text-xs text-cyan-600 dark:text-cyan-400 uppercase font-sans font-semibold">Consum Diari Recomanat</span>
+            <div class="text-3xl font-black text-cyan-600 dark:text-cyan-300 mt-1" id="water_liters">
+              3.1 Litres
+            </div>
+            <span class="text-xs text-slate-500" id="water_glasses_label">Equival a 12-13 gots d'aigua (250 ml)</span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 glass-card rounded-2xl p-6 shadow-xl space-y-6">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500">
+            Seguiment de Gots Diaris (Clica per marcar)
+          </h3>
+          <div id="water-glasses-tracker" class="grid grid-cols-4 sm:grid-cols-6 gap-3">
+            <!-- Dynamically populated glasses -->
+          </div>
+          
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-600 dark:text-slate-300 space-y-2">
+            <h4 class="font-bold flex items-center gap-1.5 text-slate-900 dark:text-white">
+              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Pautes per a una Hidratació Cel·lular Òptima:
+            </h4>
+            <p>• Beu 500 ml d'aigua als 15 minuts de despertar-te per reactivar el metabolisme renal.</p>
+            <p>• Reparteix el consum durant el dia; beure més de 800 ml d'un sol cop pot sobrecarregar la filtració glomerular.</p>
+            <p>• Afegeix una mica de sodi o electròlits si entrenes més de 60 minuts en ambient calorós.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- EXPORT & PRINT BANNER / CARD -->
+    <div class="mt-12 glass-card rounded-2xl p-6 shadow-lg border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 no-print">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+          <i data-lucide="file-text" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-base text-slate-900 dark:text-white">Descarrega o Imprimeix el teu Informe Complet</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Genera un document clínic amb el teu TDEE, macros, anàlisi de greix corporal i pes ideal llest per portar al teu nutricionista o entrenador.</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+        <button onclick="triggerPrintReport()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-rose-600/20">
+          <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Informe (PDF)
+        </button>
+        <button onclick="copyNutritionalSummary()" class="px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold flex items-center gap-1.5 transition-colors">
+          <i data-lucide="copy" class="w-4 h-4"></i> Copiar Resum
+        </button>
+      </div>
+    </div>
+
+    <!-- IN-FEED AD SLOT 2 -->
+    <div class="my-12 no-print">
+      <div class="ad-placeholder rounded-2xl p-6 flex flex-col items-center justify-center min-h-[120px] text-center">
+        <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+          <i data-lucide="badge-dollar-sign" class="w-4 h-4 text-rose-500"></i> Espai Publicitari Google AdSense (In-Article Nutrition)
+        </div>
+        <p class="text-xs text-slate-400">Format d'anunci integrat d'alt rendiment en tràfic de salut i estil de vida.</p>
+      </div>
+    </div>
+
+    <!-- EDITORIAL COMPLIANCE -->
+    <section class="space-y-8 no-print">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-2xl font-bold">Fonaments de la Ciència Nutricional i Biomètrica</h2>
+        <p class="text-slate-500 text-xs sm:text-sm mt-1">Comprendre el balanç energètic i la composició corporal és l'única clau sostinguda per la ciència.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <article class="glass-card rounded-2xl p-6">
+          <h3 class="font-bold text-base mb-2 flex items-center gap-2">
+            <i data-lucide="flame" class="w-4 h-4 text-rose-500"></i> Metabolisme Basal (BMR)
+          </h3>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+            El Metabolisme Basal representa les calories mínimes per mantenir funcions vitals en estat de repòs complet a 20°C.
+          </p>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-mono text-[11px] bg-slate-50 dark:bg-slate-900 p-2 rounded-lg">
+            Homes: 10×kg + 6.25×cm - 5×edat + 5<br>
+            Dones: 10×kg + 6.25×cm - 5×edat - 161
+          </p>
+        </article>
+
+        <article class="glass-card rounded-2xl p-6">
+          <h3 class="font-bold text-base mb-2 flex items-center gap-2">
+            <i data-lucide="percent" class="w-4 h-4 text-amber-500"></i> Mètode US Navy Body Fat
+          </h3>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+            Desenvolupat pel Naval Health Research Center, utilitza relacions logarítmiques entre el coll, la cintura i l'alçada (i el maluc en dones).
+          </p>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Elimina la distorsió de l'aigua corporal que sovint falseja les bàscules d'impedància bioelèctrica domèstiques.
+          </p>
+        </article>
+
+        <article class="glass-card rounded-2xl p-6">
+          <h3 class="font-bold text-base mb-2 flex items-center gap-2">
+            <i data-lucide="scale" class="w-4 h-4 text-indigo-500"></i> Fórmules de Pes Ideal
+          </h3>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+            Mentre que l'IMC només relaciona pes i alçada al quadrat, fórmules clíniques com Devine o Robinson proporcionen pesos diana diferenciats per sexe biològic.
+          </p>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            S'utilitzen com a referència internacional en anàlisis de longevitat i dosificació farmacològica.
+          </p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-10 mt-16 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-rose-600 flex items-center justify-center text-white">
+              <i data-lucide="activity" class="w-4 h-4"></i>
+            </div>
+            <span class="font-extrabold text-lg text-slate-900 dark:text-white">FitMetrics Hub</span>
+          </div>
+          <p class="text-xs text-slate-500 max-w-sm leading-relaxed">
+            Plataforma gratuïta de càlcul nutricional, estimació de composició corporal i mètriques basades en ciència mèdica validada.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Mètriques</h4>
+          <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+            <li><a href="javascript:void(0)" onclick="switchFitTab('tdee')" class="hover:text-rose-500">Calculadora TDEE & Macros</a></li>
+            <li><a href="javascript:void(0)" onclick="switchFitTab('bodyfat')" class="hover:text-rose-500">Greix Corporal US Navy</a></li>
+            <li><a href="javascript:void(0)" onclick="switchFitTab('idealweight')" class="hover:text-rose-500">Pes Ideal Clínic (4 Fórmules)</a></li>
+            <li><a href="javascript:void(0)" onclick="switchFitTab('water')" class="hover:text-rose-500">Consum d'Aigua Recomanat</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Informació Legal</h4>
+          <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+            <li><a href="privacy.html" class="hover:text-rose-500">Política de Privadesa</a></li>
+            <li><a href="terms.html" class="hover:text-rose-500">Condicions d'Ús</a></li>
+            <li><a href="ads.txt" class="hover:text-rose-500">Fitxer ads.txt</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-400 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-3">
+        <span>© 2026 FitMetrics Hub. Aquestes eines tenen un objectiu informatiu i no substitueixen una consulta mèdica o nutricional individualitzada.</span>
+        <button onclick="triggerPrintReport()" class="text-rose-500 hover:underline flex items-center gap-1 font-semibold">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i> Imprimir informe
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="fitToast" class="fixed top-5 right-5 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-xl font-mono text-xs hidden items-center gap-2 transition-all">
+    <i data-lucide="check-circle" class="w-4 h-4"></i>
+    <span id="fitToastText">Copiat al porta-retalls!</span>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    let globalGender = 'm';
+    let macroChartInstance = null;
+    let bodyFatChartInstance = null;
+    let waterGlassesChecked = 0;
+
+    function showFitToast(msg) {
+      const toast = document.getElementById('fitToast');
+      document.getElementById('fitToastText').innerText = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 2500);
+    }
+
+    // Tab Switching
+    function switchFitTab(tabId) {
+      document.querySelectorAll('.fit-tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.fittab-button').forEach(btn => {
+        btn.classList.remove('bg-white', 'dark:bg-slate-700', 'text-rose-600', 'dark:text-rose-400', 'shadow-sm');
+        btn.classList.add('text-slate-600', 'dark:text-slate-300');
+      });
+
+      const targetSection = document.getElementById('fit-section-' + tabId);
+      const targetBtn = document.getElementById('fittab-btn-' + tabId);
+      if (targetSection) targetSection.classList.remove('hidden');
+      if (targetBtn) {
+        targetBtn.classList.add('bg-white', 'dark:bg-slate-700', 'text-rose-600', 'dark:text-rose-400', 'shadow-sm');
+        targetBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+      }
+
+      lucide.createIcons();
+    }
+
+    // Global Gender & Biometric Sync
+    function setGlobalGender(g) {
+      globalGender = g;
+      const btnM = document.getElementById('global-gender-m');
+      const btnF = document.getElementById('global-gender-f');
+      const hipContainer = document.getElementById('navy_hip_container');
+      const genderIndicator = document.getElementById('navy_gender_indicator');
+
+      if (g === 'm') {
+        btnM.className = "px-2.5 py-1 rounded font-semibold text-xs bg-rose-500 text-white shadow-sm transition-all flex items-center gap-1";
+        btnF.className = "px-2.5 py-1 rounded font-semibold text-xs text-slate-600 dark:text-slate-400 transition-all flex items-center gap-1";
+        hipContainer.classList.add('hidden');
+        genderIndicator.innerText = "Criteri: Homes";
+        
+        // Update ACE display for male
+        document.getElementById('ace-range-essential').innerText = "2 - 5% (Homes)";
+        document.getElementById('ace-range-athletes').innerText = "6 - 13% (Homes)";
+        document.getElementById('ace-range-fitness').innerText = "14 - 17% (Homes)";
+        document.getElementById('ace-range-average').innerText = "18 - 24% (Homes)";
+        document.getElementById('ace-range-obese').innerText = "≥ 25% (Homes)";
+      } else {
+        btnF.className = "px-2.5 py-1 rounded font-semibold text-xs bg-rose-500 text-white shadow-sm transition-all flex items-center gap-1";
+        btnM.className = "px-2.5 py-1 rounded font-semibold text-xs text-slate-600 dark:text-slate-400 transition-all flex items-center gap-1";
+        hipContainer.classList.remove('hidden');
+        genderIndicator.innerText = "Criteri: Dones";
+
+        // Update ACE display for female
+        document.getElementById('ace-range-essential').innerText = "10 - 13% (Dones)";
+        document.getElementById('ace-range-athletes').innerText = "14 - 20% (Dones)";
+        document.getElementById('ace-range-fitness').innerText = "21 - 24% (Dones)";
+        document.getElementById('ace-range-average').innerText = "25 - 31% (Dones)";
+        document.getElementById('ace-range-obese').innerText = "≥ 32% (Dones)";
+      }
+
+      calculateAll();
+    }
+
+    function syncBiometrics(param, val) {
+      calculateAll();
+    }
+
+    function calculateAll() {
+      calculateTDEE();
+      calculateBodyFat();
+      calculateIdealWeight();
+      calculateHydration();
+    }
+
+    // 1. TDEE & Calories (Mifflin-St Jeor)
+    function calculateTDEE() {
+      const age = parseFloat(document.getElementById('global_age').value) || 28;
+      const weight = parseFloat(document.getElementById('global_weight').value) || 75;
+      const height = parseFloat(document.getElementById('global_height').value) || 178;
+      const activity = parseFloat(document.getElementById('fit_activity').value) || 1.375;
+      const goalAdjustment = parseFloat(document.getElementById('fit_goal').value) || 0;
+      const dietType = document.getElementById('fit_diet_type').value;
+
+      // Mifflin-St Jeor
+      let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+      if (globalGender === 'm') {
+        bmr += 5;
+      } else {
+        bmr -= 161;
+      }
+
+      const tdee = Math.round(bmr * activity);
+      const targetCalories = Math.max(1200, Math.round(tdee + goalAdjustment));
+
+      document.getElementById('fit_res_bmr').innerText = Math.round(bmr).toLocaleString() + ' kcal';
+      document.getElementById('fit_res_tdee').innerText = tdee.toLocaleString() + ' kcal';
+      document.getElementById('fit_res_target').innerText = targetCalories.toLocaleString() + ' kcal';
+
+      // Macronutrient Splits
+      let pRatio = 0.30, cRatio = 0.45, fRatio = 0.25;
+      let dietLabel = "Equilibrada (30P / 45C / 25G)";
+
+      if (dietType === 'highprotein') {
+        pRatio = 0.35; cRatio = 0.40; fRatio = 0.25;
+        dietLabel = "Alta en Proteïna (35P / 40C / 25G)";
+      } else if (dietType === 'lowcarb') {
+        pRatio = 0.35; cRatio = 0.25; fRatio = 0.40;
+        dietLabel = "Baixa en Carbs (35P / 25C / 40G)";
+      } else if (dietType === 'keto') {
+        pRatio = 0.20; cRatio = 0.05; fRatio = 0.75;
+        dietLabel = "Cetogènica Keto (20P / 5C / 75G)";
+      }
+      document.getElementById('macro-diet-name').innerText = dietLabel;
+
+      const proteinCals = targetCalories * pRatio;
+      const carbCals = targetCalories * cRatio;
+      const fatCals = targetCalories * fRatio;
+
+      const proteinG = Math.round(proteinCals / 4);
+      const carbG = Math.round(carbCals / 4);
+      const fatG = Math.round(fatCals / 9);
+
+      document.getElementById('macro_protein_g').innerText = `${proteinG} g (${Math.round(proteinCals)} kcal)`;
+      document.getElementById('macro_carb_g').innerText = `${carbG} g (${Math.round(carbCals)} kcal)`;
+      document.getElementById('macro_fat_g').innerText = `${fatG} g (${Math.round(fatCals)} kcal)`;
+
+      renderMacroChart(proteinCals, carbCals, fatCals);
+    }
+
+    function renderMacroChart(p, c, f) {
+      const ctx = document.getElementById('macroChart').getContext('2d');
+      if (macroChartInstance) macroChartInstance.destroy();
+
+      macroChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Proteïna', 'Hidrats', 'Greixos'],
+          datasets: [{
+            data: [p, c, f],
+            backgroundColor: ['#f43f5e', '#f59e0b', '#06b6d4'],
+            borderWidth: 0,
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          cutout: '70%'
+        }
+      });
+    }
+
+    // 2. US Navy Body Fat Calculator
+    function calculateBodyFat() {
+      const height = parseFloat(document.getElementById('global_height').value) || 178;
+      const weight = parseFloat(document.getElementById('global_weight').value) || 75;
+      const neck = parseFloat(document.getElementById('navy_neck').value) || 38;
+      const waist = parseFloat(document.getElementById('navy_waist').value) || 84;
+      const hip = parseFloat(document.getElementById('navy_hip').value) || 98;
+
+      let bodyFatPercent = 0;
+
+      if (globalGender === 'm') {
+        // Men: 495 / (1.0324 - 0.19077 * log10(waist - neck) + 0.15456 * log10(height)) - 450
+        const diff = waist - neck;
+        if (diff > 0 && height > 0) {
+          const denominator = 1.0324 - (0.19077 * Math.log10(diff)) + (0.15456 * Math.log10(height));
+          bodyFatPercent = (495 / denominator) - 450;
+        }
+      } else {
+        // Women: 495 / (1.29579 - 0.35004 * log10(waist + hip - neck) + 0.22100 * log10(height)) - 450
+        const diff = waist + hip - neck;
+        if (diff > 0 && height > 0) {
+          const denominator = 1.29579 - (0.35004 * Math.log10(diff)) + (0.22100 * Math.log10(height));
+          bodyFatPercent = (495 / denominator) - 450;
+        }
+      }
+
+      bodyFatPercent = Math.max(3, Math.min(60, bodyFatPercent));
+      const bodyFatFormatted = bodyFatPercent.toFixed(1);
+      const fatMass = (weight * (bodyFatPercent / 100)).toFixed(1);
+      const leanMass = (weight - parseFloat(fatMass)).toFixed(1);
+
+      document.getElementById('navy_res_percent').innerText = `${bodyFatFormatted}%`;
+      document.getElementById('navy_res_fatmass').innerText = `${fatMass} kg`;
+      document.getElementById('navy_res_leanmass').innerText = `${leanMass} kg`;
+
+      // Category assignment (ACE)
+      let catText = "Mitjà";
+      let catColor = "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300";
+
+      if (globalGender === 'm') {
+        if (bodyFatPercent < 6) {
+          catText = "Essencial";
+          catColor = "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300";
+        } else if (bodyFatPercent < 14) {
+          catText = "Atleta d'Elit";
+          catColor = "bg-cyan-100 text-cyan-700 dark:bg-cyan-950 dark:text-cyan-300";
+        } else if (bodyFatPercent < 18) {
+          catText = "Fitness / Magre";
+          catColor = "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300";
+        } else if (bodyFatPercent < 25) {
+          catText = "Mitjà / Acceptable";
+          catColor = "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300";
+        } else {
+          catText = "Obesitat";
+          catColor = "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300";
+        }
+      } else {
+        if (bodyFatPercent < 14) {
+          catText = "Essencial";
+          catColor = "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300";
+        } else if (bodyFatPercent < 21) {
+          catText = "Atleta d'Elit";
+          catColor = "bg-cyan-100 text-cyan-700 dark:bg-cyan-950 dark:text-cyan-300";
+        } else if (bodyFatPercent < 25) {
+          catText = "Fitness / Magre";
+          catColor = "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300";
+        } else if (bodyFatPercent < 32) {
+          catText = "Mitjà / Acceptable";
+          catColor = "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300";
+        } else {
+          catText = "Obesitat";
+          catColor = "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300";
+        }
+      }
+
+      const badge = document.getElementById('navy_res_category_badge');
+      badge.innerText = catText;
+      badge.className = `inline-block mt-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${catColor}`;
+
+      renderBodyFatChart(parseFloat(leanMass), parseFloat(fatMass));
+    }
+
+    function renderBodyFatChart(lean, fat) {
+      const ctx = document.getElementById('bodyFatChart').getContext('2d');
+      if (bodyFatChartInstance) bodyFatChartInstance.destroy();
+
+      bodyFatChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Massa Magra', 'Massa Grassa'],
+          datasets: [{
+            data: [lean, fat],
+            backgroundColor: ['#06b6d4', '#f59e0b'],
+            borderWidth: 0,
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          cutout: '70%'
+        }
+      });
+    }
+
+    // 3. Ideal Weight Clinical Formulas & BMI
+    function calculateIdealWeight() {
+      const height = parseFloat(document.getElementById('global_height').value) || 178;
+      const weight = parseFloat(document.getElementById('global_weight').value) || 75;
+
+      const heightInches = height / 2.54;
+      const inchesOver5Ft = Math.max(0, heightInches - 60);
+
+      let devine = 0, robinson = 0, miller = 0, hamwi = 0;
+
+      if (globalGender === 'm') {
+        devine = 50.0 + (2.3 * inchesOver5Ft);
+        robinson = 52.0 + (1.9 * inchesOver5Ft);
+        miller = 56.2 + (1.41 * inchesOver5Ft);
+        hamwi = 48.0 + (2.7 * inchesOver5Ft);
+      } else {
+        devine = 45.5 + (2.3 * inchesOver5Ft);
+        robinson = 49.0 + (1.7 * inchesOver5Ft);
+        miller = 53.1 + (1.36 * inchesOver5Ft);
+        hamwi = 45.5 + (2.2 * inchesOver5Ft);
+      }
+
+      const avgIdeal = (devine + robinson + miller + hamwi) / 4;
+      const heightM = height / 100;
+      const currentBmi = weight / (heightM * heightM);
+      const whoMin = 18.5 * (heightM * heightM);
+      const whoMax = 24.9 * (heightM * heightM);
+
+      document.getElementById('ideal_devine_val').innerText = `${devine.toFixed(1)} kg`;
+      document.getElementById('ideal_robinson_val').innerText = `${robinson.toFixed(1)} kg`;
+      document.getElementById('ideal_miller_val').innerText = `${miller.toFixed(1)} kg`;
+      document.getElementById('ideal_hamwi_val').innerText = `${hamwi.toFixed(1)} kg`;
+
+      document.getElementById('ideal_avg_weight').innerText = `${avgIdeal.toFixed(1)} kg`;
+      document.getElementById('ideal_curr_weight_display').innerText = `${weight} kg`;
+      document.getElementById('ideal_curr_bmi').innerText = currentBmi.toFixed(1);
+      document.getElementById('ideal_who_range').innerText = `${whoMin.toFixed(1)} kg - ${whoMax.toFixed(1)} kg`;
+
+      // BMI Label
+      const bmiLabel = document.getElementById('ideal_curr_bmi_label');
+      if (currentBmi < 18.5) {
+        bmiLabel.innerText = "Sota Pes";
+        bmiLabel.className = "text-[10px] text-amber-500 block";
+      } else if (currentBmi < 25) {
+        bmiLabel.innerText = "Pes Normal";
+        bmiLabel.className = "text-[10px] text-emerald-500 block";
+      } else if (currentBmi < 30) {
+        bmiLabel.innerText = "Sobrepès";
+        bmiLabel.className = "text-[10px] text-amber-500 block";
+      } else {
+        bmiLabel.innerText = "Obesitat";
+        bmiLabel.className = "text-[10px] text-rose-500 block";
+      }
+
+      // Delta Msg
+      const delta = (weight - avgIdeal).toFixed(1);
+      const deltaMsg = document.getElementById('ideal_weight_delta_msg');
+      if (Math.abs(delta) < 1.0) {
+        deltaMsg.innerText = "Estàs exactament al centre de la mitjana clínica de pes ideal! (±0 kg)";
+      } else if (delta > 0) {
+        deltaMsg.innerText = `Et trobes a +${delta} kg respecte a la mitjana clínica de pes ideal recomanat.`;
+      } else {
+        deltaMsg.innerText = `Et trobes a ${delta} kg per sota de la mitjana clínica de pes ideal recomanat.`;
+      }
+
+      // Comparison table rows
+      const formulasList = [
+        { name: "Devine (1974)", val: devine, desc: "Dosatge hospitalari" },
+        { name: "Robinson (1983)", val: robinson, desc: "Població general" },
+        { name: "Miller (1983)", val: miller, desc: "Antropomètric" },
+        { name: "Hamwi (1964)", val: hamwi, desc: "Referència endocrina" }
+      ];
+
+      const tbody = document.getElementById('ideal-table-body');
+      tbody.innerHTML = formulasList.map(item => {
+        const diffVal = (weight - item.val).toFixed(1);
+        const diffSign = diffVal > 0 ? `+${diffVal} kg` : `${diffVal} kg`;
+        const diffClass = Math.abs(diffVal) <= 3 ? "text-emerald-500" : (diffVal > 0 ? "text-amber-500" : "text-cyan-500");
+        return `
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
+            <td class="py-3 font-semibold text-slate-800 dark:text-slate-200">
+              ${item.name}
+              <span class="block text-[10px] text-slate-400 font-sans">${item.desc}</span>
+            </td>
+            <td class="py-3 font-bold text-slate-900 dark:text-white">${item.val.toFixed(1)} kg</td>
+            <td class="py-3 font-bold ${diffClass}">${diffSign}</td>
+            <td class="py-3">
+              <span class="text-[10px] font-sans px-2 py-0.5 rounded-full ${Math.abs(diffVal) <= 3 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'}">
+                ${Math.abs(diffVal) <= 3 ? 'Òptim Clínic' : 'Desviació Moderada'}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 4. Hydration Calculator
+    function calculateHydration() {
+      const weight = parseFloat(document.getElementById('global_weight').value) || 75;
+      const extraClimate = parseFloat(document.getElementById('water_climate').value) || 500;
+
+      const baseMl = weight * 35;
+      const totalMl = baseMl + extraClimate;
+      const totalL = (totalMl / 1000).toFixed(1);
+      const glassesCount = Math.round(totalMl / 250);
+
+      document.getElementById('water_liters').innerText = `${totalL} Litres`;
+      document.getElementById('water_glasses_label').innerText = `Equival a ${glassesCount} gots d'aigua (250 ml cadascun)`;
+
+      renderWaterGlasses(glassesCount);
+    }
+
+    function renderWaterGlasses(count) {
+      const container = document.getElementById('water-glasses-tracker');
+      let html = '';
+      for (let i = 1; i <= count; i++) {
+        const isChecked = i <= waterGlassesChecked;
+        html += `
+          <button type="button" onclick="toggleWaterGlass(${i})" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${isChecked ? 'bg-cyan-500 text-white border-cyan-400 shadow-md' : 'bg-slate-50 dark:bg-slate-800/80 text-slate-400 border-slate-200 dark:border-slate-700 hover:border-cyan-400'}">
+            <i data-lucide="droplet" class="w-5 h-5 ${isChecked ? 'fill-current' : ''}"></i>
+            <span class="text-[10px] font-mono">${i * 250} ml</span>
+          </button>
+        `;
+      }
+      container.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function toggleWaterGlass(idx) {
+      if (waterGlassesChecked === idx) {
+        waterGlassesChecked = idx - 1;
+      } else {
+        waterGlassesChecked = idx;
+      }
+      calculateHydration();
+    }
+
+    // 5. Print & Export Functionality
+    function triggerPrintReport() {
+      // Set current date on print header
+      const d = new Date();
+      document.getElementById('print-date').innerText = d.toLocaleDateString('ca-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+      // Populate print summary metrics
+      const age = document.getElementById('global_age').value;
+      const weight = document.getElementById('global_weight').value;
+      const height = document.getElementById('global_height').value;
+      const genderStr = globalGender === 'm' ? 'Home' : 'Dona';
+      const targetCals = document.getElementById('fit_res_target').innerText;
+      const bmr = document.getElementById('fit_res_bmr').innerText;
+      const tdee = document.getElementById('fit_res_tdee').innerText;
+      const bfPercent = document.getElementById('navy_res_percent').innerText;
+      const idealAvg = document.getElementById('ideal_avg_weight').innerText;
+      const currentBmi = document.getElementById('ideal_curr_bmi').innerText;
+
+      document.getElementById('print-summary-metrics').innerHTML = `
+        <div class="p-2 border border-slate-300 rounded">
+          <div class="text-[10px] text-slate-500">PERFIL</div>
+          <div class="font-bold">${genderStr}, ${age} anys</div>
+          <div>${weight} kg • ${height} cm</div>
+        </div>
+        <div class="p-2 border border-slate-300 rounded">
+          <div class="text-[10px] text-slate-500">ENERGIA & TDEE</div>
+          <div class="font-bold text-rose-600">${targetCals}</div>
+          <div>BMR: ${bmr}</div>
+        </div>
+        <div class="p-2 border border-slate-300 rounded">
+          <div class="text-[10px] text-slate-500">GREIX US NAVY</div>
+          <div class="font-bold text-amber-600">${bfPercent}</div>
+          <div>IMC: ${currentBmi}</div>
+        </div>
+        <div class="p-2 border border-slate-300 rounded">
+          <div class="text-[10px] text-slate-500">PES IDEAL CLÍNIC</div>
+          <div class="font-bold text-indigo-600">${idealAvg}</div>
+          <div>4 Fórmules Mèdiques</div>
+        </div>
+      `;
+
+      window.print();
+    }
+
+    function copyNutritionalSummary() {
+      const age = document.getElementById('global_age').value;
+      const weight = document.getElementById('global_weight').value;
+      const height = document.getElementById('global_height').value;
+      const genderStr = globalGender === 'm' ? 'Home' : 'Dona';
+      const targetCals = document.getElementById('fit_res_target').innerText;
+      const tdee = document.getElementById('fit_res_tdee').innerText;
+      const bmr = document.getElementById('fit_res_bmr').innerText;
+      const protein = document.getElementById('macro_protein_g').innerText;
+      const carbs = document.getElementById('macro_carb_g').innerText;
+      const fats = document.getElementById('macro_fat_g').innerText;
+      const bf = document.getElementById('navy_res_percent').innerText;
+      const idealAvg = document.getElementById('ideal_avg_weight').innerText;
+      const bmi = document.getElementById('ideal_curr_bmi').innerText;
+      const water = document.getElementById('water_liters').innerText;
+
+      const summary = `FitMetrics Hub — Resum Clínic i Nutricional
+================================================
+• Perfil Biomètric: ${genderStr}, ${age} anys | Pes: ${weight} kg | Alçada: ${height} cm | IMC: ${bmi}
+• Despesa Energètica:
+  - BMR (Metabolisme Basal): ${bmr}
+  - TDEE (Manteniment): ${tdee}
+  - Calories Objectiu: ${targetCals}
+• Distribució de Macronutrients:
+  - Proteïna: ${protein}
+  - Hidrats de carboni: ${carbs}
+  - Greixos saludables: ${fats}
+• Composició Corporal (US Navy):
+  - % Greix Corporal: ${bf}
+• Pes Ideal Clínic (Mitjana Devine, Robinson, Miller, Hamwi): ${idealAvg}
+• Consum d'Aigua Recomanat: ${water}/dia
+================================================
+Generat per FitMetrics Hub (https://fitmetrics-hub.local)`;
+
+      navigator.clipboard.writeText(summary).then(() => {
+        showFitToast("Resum nutricional copiat al porta-retalls!");
+      });
+    }
+
+    // Theme Toggle
+    document.getElementById('themeToggleFit').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      calculateAll();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      setGlobalGender('m');
+    });
+  </script>
+</body>
+</html>
