@@ -1,25 +1,25 @@
-# 🥗 FitMetrics Hub — Calculadora Nutricional, Greix US Navy & Pes Ideal Clínic
+# 🥗 FitMetrics Hub — Calculadora Nutricional, Grasa US Navy y Peso Ideal Clínico
 
-Suite d'eines de salut, despesa calòrica, composició corporal i càlcul de macronutrients amb alt volum de cerca orgànica a Google.
+Suite de herramientas de salud, gasto calórico, composición corporal y cálculo de macronutrientes con alto volumen de búsqueda orgánica en Google.
 
 ---
 
-## 🧰 Eines i Mètriques Incloses:
-1. **Calculadora TDEE & Metabolisme Basal (BMR)**: Algorisme clínic de Mifflin-St Jeor amb ajust d'activitat física i objectius de dèficit o superàvit.
-2. **Distribució Dinàmica de Macros**: Repartiment equilibrat, alt en proteïnes, baix en carbohidrats o cetogènic (Keto) amb gràfics donut interactius en temps real (Chart.js).
-3. **Calculadora de % de Greix Corporal (Mètode Marina dels EUA / US Navy)**: Estimació logarítmica d'alta fiabilitat a partir dels perímetres de coll, cintura i maluc (per a dones), desglossant massa grassa vs massa magra (LBM) i categories oficials de l'American Council on Exercise (ACE).
-4. **Comparativa de Pes Ideal segons 4 Fórmules Clíniques**:
-   - **Fórmula de Devine (1974)** (estàndard hospitalari i farmacològic)
+## 🧰 Herramientas y Métricas Incluidas:
+1. **Calculadora TDEE y Metabolismo Basal (BMR)**: Algoritmo clínico de Mifflin-St Jeor con ajuste de actividad física y objetivos de déficit o superávit.
+2. **Distribución Dinámica de Macros**: Reparto equilibrado, alto en proteínas, bajo en carbohidratos o cetogénico (Keto) con gráficos donut interactivos en tiempo real (Chart.js).
+3. **Calculadora de % de Grasa Corporal (Método Marina de EE. UU. / US Navy)**: Estimación logarítmica de alta fiabilidad a partir de los perímetros de cuello, cintura y cadera (para mujeres), desglosando masa grasa vs masa magra (LBM) y categorías oficiales del American Council on Exercise (ACE).
+4. **Comparativa de Peso Ideal según 4 Fórmulas Clínicas**:
+   - **Fórmula de Devine (1974)** (estándar hospitalario y farmacológico)
    - **Fórmula de Robinson (1983)**
    - **Fórmula de Miller (1983)**
    - **Fórmula de Hamwi (1964)**
-   - Mitjana combinada de pes ideal i rang saludable segons l'OMS (IMC 18.5 - 24.9).
-5. **Calculadora d'Hidratació i Seguiment de Gots**: Càlcul personalitzat d'aigua diària segons pes i clima/activitat física.
-6. **Exportació i Impressió d'Informes (PDF)**: Botó dedicat d'impressió optimitzada amb estils `@media print` per generar informes mèdics nets i còpia ràpida de resums al porta-retalls.
+   - Promedio combinado de peso ideal y rango saludable según la OMS (IMC 18.5 - 24.9).
+5. **Calculadora de Hidratación y Seguimiento de Vasos**: Cálculo personalizado de agua diaria según peso y clima/actividad física.
+6. **Exportación e Impresión de Informes (PDF)**: Botón dedicado de impresión optimizada con estilos `@media print` para generar informes médicos limpios y copia rápida de resúmenes al portapapeles.
 
 ---
 
-## 🚀 Avantatges Tècnics:
-- **Sincronització Biomètrica Unificada**: Canviar el sexe, l'edat, el pes o l'alçada actualitza automàticament totes les eines i taules simultàniament.
-- **Dades Estructurades Schema.org**: Etiquetes JSON-LD `WebApplication` / `HealthApplication` per a rich snippets i indexació SEO a Google.
-- **Insercions preparades per a anuncis de Google AdSense**: Formats Leaderboard i In-Feed d'alt rendiment per a la temàtica fitness/salut.
+## 🚀 Ventajas Técnicas:
+- **Sincronización Biométrica Unificada**: Cambiar el sexo, la edad, el peso o la altura actualiza automáticamente todas las herramientas y tablas simultáneamente.
+- **Datos Estructurados Schema.org**: Etiquetas JSON-LD `WebApplication` / `HealthApplication` para rich snippets e indexación SEO en Google.
+- **Inserciones preparadas para anuncios de Google AdSense**: Formatos Leaderboard e In-Feed de alto rendimiento para la temática fitness/salud.
